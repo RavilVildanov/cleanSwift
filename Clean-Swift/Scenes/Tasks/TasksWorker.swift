@@ -1,0 +1,16 @@
+//
+//  TasksWorker.swift
+//  Clean-Swift
+//
+//  Created by Равиль Вильданов on 21/05/2019.
+//  Copyright (c) 2019 Vildanov. All rights reserved.
+//
+
+import UIKit
+
+class TasksWorker {
+    func fetchTasks() -> [Task] {
+        let tasks = TasksManager.shared.allTasks()
+        return tasks
+    }
+}
