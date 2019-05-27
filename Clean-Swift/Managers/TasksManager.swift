@@ -7,24 +7,28 @@
 //
 
 import Foundation
+import RealmSwift
 
 final class TasksManager {
     static let shared = TasksManager()
     private init() { }
 
-    private var tasks = [Task(title: "Title 1", explanation: "Explain 1"),
-                         Task(title: "Title 2", explanation: "Explain 2"),
-                         Task(title: "Title 3", explanation: "Explain 3")]
+    private let realm = try! Realm()
 
     func allTasks() -> [Task] {
-        return tasks
+        let rlmTasks = realm.objects(RLMTask.self)
+        let tasks = rlmTasks.map { Task.mapFromRealmObject($0) }
+        return Array(tasks)
     }
 
     func addOrUpdate(task: Task) {
-        if let index = tasks.firstIndex(of: task) {
-            self.tasks[index] = task
-        } else {
-            self.tasks.append(task)
+        try! realm.write {
+            if let object = realm.object(ofType: RLMTask.self, forPrimaryKey: task.id) {
+                object.title = task.title
+                object.explanation = task.explanation
+            } else {
+                realm.add(task.mapToRealmObject())
+            }
         }
     }
 }

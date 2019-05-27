@@ -11,6 +11,6 @@ import UIKit
 class TasksWorker {
     func fetchTasks() -> [Task] {
         let tasks = TasksManager.shared.allTasks()
-        return tasks
+        return tasks.map { $0 }
     }
 }
