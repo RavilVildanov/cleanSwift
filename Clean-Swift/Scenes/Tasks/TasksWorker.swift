@@ -13,4 +13,8 @@ class TasksWorker {
         let tasks = TasksManager.shared.allTasks()
         return tasks.map { $0 }
     }
+
+    func delete(task taskToDelete: Task) {
+        TasksManager.shared.delete(task: taskToDelete)
+    }
 }

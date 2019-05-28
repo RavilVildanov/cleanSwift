@@ -31,4 +31,12 @@ final class TasksManager {
             }
         }
     }
+
+    func delete(task: Task) {
+        try! realm.write {
+            if let object = realm.object(ofType: RLMTask.self, forPrimaryKey: task.id) {
+                realm.delete(object)
+            }
+        }
+    }
 }

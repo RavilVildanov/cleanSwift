@@ -10,6 +10,7 @@ import UIKit
 
 protocol TasksBusinessLogic {
     func fetchTasks(request: Tasks.ShowTasks.Request)
+    func deleteTask(request: Tasks.DeleteTask.Request)
 }
 
 protocol TasksDataStore {
@@ -18,17 +19,24 @@ protocol TasksDataStore {
 
 class TasksInteractor: TasksBusinessLogic, TasksDataStore {
     var presenter: TasksPresentationLogic?
-    var worker: TasksWorker?
+    var worker = TasksWorker()
     var tasks = [Task]()
 
-    // MARK: Do something
+    // MARK: TasksBusinessLogic
 
     func fetchTasks(request: Tasks.ShowTasks.Request) {
-        worker = TasksWorker()
-        guard let tasks = worker?.fetchTasks() else { return }
-        self.tasks = tasks
+        self.tasks = worker.fetchTasks()
 
-        let response = Tasks.ShowTasks.Response(tasks: tasks)
+        let response = Tasks.ShowTasks.Response(tasks: self.tasks)
+        presenter?.presentTasks(response: response)
+    }
+
+    func deleteTask(request: Tasks.DeleteTask.Request) {
+        let taskToDelete = self.tasks[request.index]
+        worker.delete(task: taskToDelete)
+        
+        self.tasks = worker.fetchTasks()
+        let response = Tasks.ShowTasks.Response(tasks: self.tasks)
         presenter?.presentTasks(response: response)
     }
 }

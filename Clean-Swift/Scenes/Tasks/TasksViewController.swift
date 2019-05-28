@@ -87,6 +87,13 @@ extension TasksViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         self.tableView.deselectRow(at: indexPath, animated: true)
     }
+
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            let request = Tasks.DeleteTask.Request(index: indexPath.row)
+            self.interactor?.deleteTask(request: request)
+        }
+    }
 }
 
 // MARK: - UITableViewDataSource

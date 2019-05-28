@@ -29,4 +29,19 @@ enum Tasks {
             var displayedTasks: [DisplayedTask]
         }
     }
+
+    enum DeleteTask {
+
+        struct Request {
+            let index: Int
+        }
+
+        struct Response {
+
+        }
+
+        struct ViewModel {
+
+        }
+    }
 }
